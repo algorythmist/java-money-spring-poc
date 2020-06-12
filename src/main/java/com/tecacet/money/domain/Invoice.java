@@ -3,6 +3,9 @@ package com.tecacet.money.domain;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.Data;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -18,6 +21,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "invoice")
+@Data
 public class Invoice {
 
     @Id
@@ -27,14 +31,16 @@ public class Invoice {
     @NotNull
     private String clientId;
 
-    @NotNull
-    private String targetCurrency;
-
     @Columns(columns = {
             @Column(name = "amount"),
             @Column(name = "currency")})
     @NotNull(message = "Total is required")
     private MonetaryAmount total;
+
+    @NotNull
+    private LocalDate invoiceDate;
+    @NotNull
+    private LocalDate dueDate;
 
     @Column(name = "created", nullable = false, updatable = false)
     @CreationTimestamp

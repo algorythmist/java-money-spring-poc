@@ -10,11 +10,12 @@ import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.money.Monetary;
+import javax.money.convert.ExchangeRateProvider;
 
 @SpringBootTest
 class FeeRepositoryTest {
@@ -22,12 +23,15 @@ class FeeRepositoryTest {
     @Autowired
     private FeeRepository feeRepository;
 
+    @MockBean
+    private ExchangeRateProvider exchangeRateProvider;
+
     @Test
     void findByClientId() {
         Fee fee1 = createFee("1", 100.0, "USD");
         Fee fee2 = createFee("2", 200.0, "EUR");
         Fee fee3 = createFee("1", 300.0, "GBP");
-        feeRepository.saveAll(Arrays.asList(fee1, fee2, fee3));
+        feeRepository.saveAll(List.of(fee1, fee2, fee3));
 
         List<Fee> client1Fees = feeRepository.findByClientId("1");
         assertEquals(2, client1Fees.size());
