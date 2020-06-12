@@ -16,8 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - # Runs a set of commands using the runners shell
+    # Runs a set of commands using the runners shell
     - name: Run maven script
       uses: xlui/action-maven-cli/jdk11@master
       id: test
