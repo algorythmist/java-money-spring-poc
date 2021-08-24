@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.1.RELEASE</version>
+		<version>2.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tecacet</groupId>
@@ -15,10 +15,10 @@
 	<description>Demo for a multi-currency SpringBoot app</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>16</java.version>
 		<h2.version>1.4.200</h2.version>
-		<moneta.version>1.4</moneta.version>
-		<lombok.version>1.18.12</lombok.version>
+		<moneta.version>1.4.2</moneta.version>
+		<lombok.version>1.18.20</lombok.version>
 	</properties>
 
 	<dependencies>
