@@ -4,6 +4,7 @@ import com.tecacet.money.domain.Fee;
 import com.tecacet.money.domain.Invoice;
 import com.tecacet.money.repository.FeeRepository;
 import com.tecacet.money.repository.InvoiceRepository;
+import com.tecacet.money.util.MoneyUtil;
 
 import org.javamoney.moneta.Money;
 import org.springframework.stereotype.Service;
@@ -26,21 +27,16 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final ExchangeRateProvider exchangeRateProvider;
 
-    public Optional<Invoice> createClientInvoice(String clientId, LocalDate date,
-            String invoiceCurrency) {
+    public Optional<Invoice> createClientInvoice(String clientId, LocalDate date, String invoiceCurrency) {
         List<Fee> fees = feeRepository.findByClientId(clientId);
         if (fees.isEmpty()) {
             return Optional.empty();
         }
         CurrencyConversion conversion = exchangeRateProvider.getCurrencyConversion(invoiceCurrency);
-        Money total = Money.of(0, invoiceCurrency);
-        for (Fee fee : fees) {
-            String currencyCode = fee.getAmount().getCurrency().getCurrencyCode();
-            MonetaryAmount amount = invoiceCurrency.equals(currencyCode) ?
-                    fee.getAmount() :
-                    conversion.apply(fee.getAmount());
-            total = total.add(amount);
-        }
+        MonetaryAmount total =
+                fees.stream()
+                        .map(fee -> getMonetaryAmount(invoiceCurrency, conversion, fee))
+                        .reduce(Money.of(0, invoiceCurrency), MonetaryAmount::add);
         Invoice invoice = new Invoice();
         invoice.setClientId(clientId);
         invoice.setTotal(total);
@@ -48,6 +44,11 @@ public class InvoiceService {
         invoice.setDueDate(date.plusMonths(1));
         invoiceRepository.save(invoice);
         return Optional.of(invoice);
+    }
+
+    private MonetaryAmount getMonetaryAmount(String invoiceCurrency, CurrencyConversion conversion, Fee fee) {
+        String currencyCode = MoneyUtil.extractCurrencyCode(fee.getAmount());
+        return invoiceCurrency.equals(currencyCode) ? fee.getAmount() : conversion.apply(fee.getAmount());
     }
 
 }

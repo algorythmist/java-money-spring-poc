@@ -15,7 +15,7 @@ public class MoneyConfig {
      */
     @Bean
     public ExchangeRateProvider exchangeRateProvider() {
-        return MonetaryConversions.getExchangeRateProvider("IMF");
+        return MonetaryConversions.getExchangeRateProvider();
     }
 }
 

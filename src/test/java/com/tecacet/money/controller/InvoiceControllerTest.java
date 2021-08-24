@@ -31,6 +31,11 @@ class InvoiceControllerTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    /**
+     * Mocking the exchange rate because:
+     * - We need a consistent result
+     * - It takes a long time to start an actual provider
+     */
     @MockBean
     private ExchangeRateProvider exchangeRateProvider;
 
