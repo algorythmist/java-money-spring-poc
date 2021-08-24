@@ -3,7 +3,8 @@ package com.tecacet.money.domain;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -15,12 +16,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "fee")
-@Data
+@Getter
+@Setter
 public class Fee {
 
     @Id
@@ -29,11 +30,10 @@ public class Fee {
 
     @NotNull
     private String clientId;
+
     private String description;
 
-    @Columns(columns = {
-            @Column(name = "amount"),
-            @Column(name = "currency")})
+    @Columns(columns = {@Column(name = "amount"), @Column(name = "currency")})
     @NotNull(message = "Amount is required")
     private MonetaryAmount amount;
 

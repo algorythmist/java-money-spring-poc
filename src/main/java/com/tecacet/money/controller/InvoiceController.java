@@ -24,7 +24,7 @@ public class InvoiceController {
     @PostMapping(value = "invoice/{clientId}",  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<InvoiceDto> createInvoice(@PathVariable("clientId") String clientId) {
         Optional<Invoice> optional =
-                invoiceService.createClientInvoice(clientId, LocalDate.now(), "USD");
+                invoiceService.createClientInvoice(clientId, LocalDate.now());
         return optional.map(entity -> ResponseEntity.ok(toDto(entity)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
 

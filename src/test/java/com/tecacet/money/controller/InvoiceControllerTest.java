@@ -2,7 +2,9 @@ package com.tecacet.money.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.tecacet.money.domain.Contract;
 import com.tecacet.money.domain.Fee;
+import com.tecacet.money.repository.ContractRepository;
 import com.tecacet.money.repository.FeeRepository;
 
 import org.javamoney.moneta.Money;
@@ -16,6 +18,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.List;
 
 import javax.money.MonetaryAmount;
@@ -27,6 +31,9 @@ class InvoiceControllerTest {
 
     @Autowired
     private FeeRepository feeRepository;
+
+    @Autowired
+    private ContractRepository contractRepository;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -54,6 +61,8 @@ class InvoiceControllerTest {
         mockCurrencyConversion();
 
         String clientId = "123";
+        createContract(clientId);
+
         Fee fee1 = createFee(clientId, 100.0, "USD");
         Fee fee2 = createFee(clientId, 200.0, "EUR");
         Fee fee3 = createFee(clientId, 300.0, "GBP");
@@ -65,7 +74,7 @@ class InvoiceControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         InvoiceDto invoice = response.getBody();
         assertEquals("USD", invoice.getCurrency());
-        assertEquals(850.00, invoice.getAmount().doubleValue(), 0.001);
+        assertEquals(850.00 - 85.0, invoice.getAmount().doubleValue(), 0.001);
     }
 
     /**
@@ -88,5 +97,13 @@ class InvoiceControllerTest {
         fee.setClientId(clientId);
         fee.setAmount(Money.of(amount, currency));
         return fee;
+    }
+
+    private Contract createContract(String clientId) {
+        Contract contract = new Contract();
+        contract.setClientId(clientId);
+        contract.setInvoiceCurrency(Currency.getInstance("USD"));
+        contract.setDiscountPercent(BigDecimal.TEN);
+        return contractRepository.save(contract);
     }
 }
