@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.convert.CurrencyConversion;
 import javax.money.convert.ExchangeRateProvider;
@@ -49,6 +50,7 @@ public class InvoiceService {
                         .reduce(Money.of(0, invoiceCurrency), MonetaryAmount::add);
 
         total = total.subtract(total.multiply(contract.getDiscountPercent()).divide(BigDecimal.valueOf(100)));
+        total = total.with(Monetary.getDefaultRounding());
         Invoice invoice = createInvoice(clientId, date, total);
         return Optional.of(invoice);
     }

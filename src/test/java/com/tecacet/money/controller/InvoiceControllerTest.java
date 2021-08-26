@@ -63,9 +63,9 @@ class InvoiceControllerTest {
         String clientId = "123";
         createContract(clientId);
 
-        Fee fee1 = createFee(clientId, 100.0, "USD");
-        Fee fee2 = createFee(clientId, 200.0, "EUR");
-        Fee fee3 = createFee(clientId, 300.0, "GBP");
+        Fee fee1 = createFee(clientId, 100.33, "USD");
+        Fee fee2 = createFee(clientId, 200.45, "EUR");
+        Fee fee3 = createFee(clientId, 300.99, "GBP");
         feeRepository.saveAll(List.of(fee1, fee2, fee3));
         ResponseEntity<InvoiceDto> response =
                 testRestTemplate.postForEntity("/invoice/"+clientId,
@@ -74,7 +74,7 @@ class InvoiceControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         InvoiceDto invoice = response.getBody();
         assertEquals("USD", invoice.getCurrency());
-        assertEquals(850.00 - 85.0, invoice.getAmount().doubleValue(), 0.001);
+        assertEquals(737.94, invoice.getAmount().doubleValue(), 0.001);
     }
 
     /**
@@ -86,7 +86,7 @@ class InvoiceControllerTest {
                 .thenAnswer((Answer<MonetaryAmount>) invocation -> {
                     Object[] args = invocation.getArguments();
                     MonetaryAmount amount = (MonetaryAmount) args[0];
-                    return Money.of(amount.getNumber().intValue() * 1.5, "USD");
+                    return Money.of(amount.getNumber().intValue() * 1.4392, "USD");
                 });
         Mockito.when(exchangeRateProvider.getCurrencyConversion("USD"))
                 .thenReturn(currencyConversion);
