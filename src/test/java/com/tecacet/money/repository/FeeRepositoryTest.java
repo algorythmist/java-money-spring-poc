@@ -40,9 +40,7 @@ class FeeRepositoryTest {
         assertEquals(1, client2Fees.size());
         Fee fee = client2Fees.get(0);
         assertNotNull(fee.getCreated());
-        assertEquals(200.00,
-                MoneyUtil.extractAmount(fee.getAmount()).doubleValue(),
-                0.001);
+        assertEquals(200.00, MoneyUtil.extractAmount(fee.getAmount()).doubleValue(), 0.001);
         assertEquals(Monetary.getCurrency("EUR"), fee.getAmount().getCurrency());
     }
 

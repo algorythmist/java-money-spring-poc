@@ -19,7 +19,7 @@
 		<h2.version>1.4.200</h2.version>
 		<moneta.version>1.4.2</moneta.version>
 		<lombok.version>1.18.20</lombok.version>
-	</properties>
+    </properties>
 
 	<dependencies>
 		<dependency>
