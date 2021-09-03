@@ -1,10 +1,8 @@
 package com.tecacet.money.domain;
 
+import lombok.*;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.CreationTimestamp;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,14 +21,17 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "invoice")
 @Getter
-@Setter
+@Builder
+//The following are required by the JPA contract
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NotNull(message = "Client ID is required")
     private String clientId;
 
     @Columns(columns = {@Column(name = "amount"), @Column(name = "currency")})
@@ -38,11 +39,13 @@ public class Invoice {
     private MonetaryAmount total;
 
     @NotNull(message = "discountPercent is required")
+    @Builder.Default
     private BigDecimal discountPercent = BigDecimal.ZERO;
 
-    @NotNull
+    @NotNull(message = "Invoice date is required")
     private LocalDate invoiceDate;
-    @NotNull
+
+    @NotNull(message = "Due date is required")
     private LocalDate dueDate;
 
     @Column(name = "created", nullable = false, updatable = false)

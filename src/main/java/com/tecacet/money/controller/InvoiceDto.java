@@ -1,11 +1,13 @@
 package com.tecacet.money.controller;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Builder
 public class InvoiceDto {
 
     private String clientId;

@@ -1,21 +1,19 @@
 package com.tecacet.money.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.tecacet.money.domain.Fee;
 import com.tecacet.money.util.MoneyUtil;
-
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.List;
-
 import javax.money.Monetary;
 import javax.money.convert.ExchangeRateProvider;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class FeeRepositoryTest {
@@ -45,9 +43,9 @@ class FeeRepositoryTest {
     }
 
     private Fee createFee(String clientId, double amount, String currency) {
-        Fee fee = new Fee();
-        fee.setClientId(clientId);
-        fee.setAmount(Money.of(amount, currency));
-        return fee;
+        return Fee.builder()
+                .clientId(clientId)
+                .amount(Money.of(amount, currency))
+                .build();
     }
 }

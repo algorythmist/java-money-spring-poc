@@ -7,21 +7,18 @@ import com.tecacet.money.repository.ContractRepository;
 import com.tecacet.money.repository.FeeRepository;
 import com.tecacet.money.repository.InvoiceRepository;
 import com.tecacet.money.util.MoneyUtil;
-
+import lombok.RequiredArgsConstructor;
 import org.javamoney.moneta.Money;
 import org.springframework.stereotype.Service;
-
-import lombok.RequiredArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
 import javax.money.convert.CurrencyConversion;
 import javax.money.convert.ExchangeRateProvider;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -56,13 +53,13 @@ public class InvoiceService {
     }
 
     private Invoice createInvoice(String clientId, LocalDate date, MonetaryAmount total) {
-        Invoice invoice = new Invoice();
-        invoice.setClientId(clientId);
-        invoice.setTotal(total);
-        invoice.setInvoiceDate(date);
-        invoice.setDueDate(date.plusMonths(1));
-        invoiceRepository.save(invoice);
-        return invoice;
+        Invoice invoice = Invoice.builder()
+                .clientId(clientId)
+                .total(total)
+                .invoiceDate(date)
+                .dueDate(date.plusMonths(1))
+                .build();
+        return invoiceRepository.save(invoice);
     }
 
     private MonetaryAmount getMonetaryAmount(String invoiceCurrency, CurrencyConversion conversion, Fee fee) {

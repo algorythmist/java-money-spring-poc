@@ -1,12 +1,9 @@
 package com.tecacet.money.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.tecacet.money.domain.Contract;
 import com.tecacet.money.domain.Fee;
 import com.tecacet.money.repository.ContractRepository;
 import com.tecacet.money.repository.FeeRepository;
-
 import org.javamoney.moneta.Money;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -18,15 +15,16 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.money.MonetaryAmount;
+import javax.money.convert.CurrencyConversion;
+import javax.money.convert.ExchangeRateProvider;
 import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-import javax.money.MonetaryAmount;
-import javax.money.convert.CurrencyConversion;
-import javax.money.convert.ExchangeRateProvider;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class InvoiceControllerTest {
 
     @Autowired
@@ -50,7 +48,7 @@ class InvoiceControllerTest {
     void createInvoice_notFound() {
         String clientId = "123";
         ResponseEntity<InvoiceDto> response =
-                testRestTemplate.postForEntity("/invoice/"+clientId,
+                testRestTemplate.postForEntity("/invoice/" + clientId,
                         clientId,
                         InvoiceDto.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -68,7 +66,7 @@ class InvoiceControllerTest {
         Fee fee3 = createFee(clientId, 300.99, "GBP");
         feeRepository.saveAll(List.of(fee1, fee2, fee3));
         ResponseEntity<InvoiceDto> response =
-                testRestTemplate.postForEntity("/invoice/"+clientId,
+                testRestTemplate.postForEntity("/invoice/" + clientId,
                         clientId,
                         InvoiceDto.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -93,17 +91,18 @@ class InvoiceControllerTest {
     }
 
     private Fee createFee(String clientId, double amount, String currency) {
-        Fee fee = new Fee();
-        fee.setClientId(clientId);
-        fee.setAmount(Money.of(amount, currency));
-        return fee;
+        return Fee.builder()
+                .clientId(clientId)
+                .amount(Money.of(amount, currency))
+                .build();
     }
 
     private Contract createContract(String clientId) {
-        Contract contract = new Contract();
-        contract.setClientId(clientId);
-        contract.setInvoiceCurrency(Currency.getInstance("USD"));
-        contract.setDiscountPercent(BigDecimal.TEN);
+        Contract contract = Contract.builder()
+                .clientId(clientId)
+                .invoiceCurrency(Currency.getInstance("USD"))
+                .discountPercent(BigDecimal.TEN)
+                .build();
         return contractRepository.save(contract);
     }
 }

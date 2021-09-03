@@ -1,27 +1,22 @@
 package com.tecacet.money.domain;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Currency;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 @Entity
 @Table(name = "contract")
 @Getter
-@Setter
+@Builder
+//The following are required by the JPA contract
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Contract {
 
     public static final String DEFAULT_CURRENCY = "USD";
@@ -30,13 +25,15 @@ public class Contract {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
+    @NotNull(message = "Client ID is required")
     private String clientId;
 
-    @NotNull
+    @NotNull(message = "Invoice Currency is required")
+    @Builder.Default
     private Currency invoiceCurrency = Currency.getInstance(DEFAULT_CURRENCY);
 
-    @NotNull
+    @NotNull(message = "Discount Percent is required")
+    @Builder.Default
     private BigDecimal discountPercent = BigDecimal.ZERO;
 
     @Column(name = "created", nullable = false, updatable = false)
