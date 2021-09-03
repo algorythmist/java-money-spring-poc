@@ -1,16 +1,21 @@
 package com.tecacet.money;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import com.tecacet.money.config.TestingExchangeRateProvider;
+import com.tecacet.money.util.MoneyUtil;
 import org.javamoney.moneta.Money;
-import org.javamoney.moneta.convert.IdentityRateProvider;
 import org.javamoney.moneta.function.MonetaryQueries;
+import org.javamoney.moneta.spi.DefaultNumberValue;
 import org.junit.jupiter.api.Test;
 
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import javax.money.NumberValue;
+import javax.money.convert.CurrencyConversion;
+import javax.money.convert.ExchangeRate;
 import javax.money.convert.ExchangeRateProvider;
-import javax.money.convert.MonetaryConversions;
+import javax.money.convert.RateType;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MoneyTest {
 
@@ -75,7 +80,27 @@ class MoneyTest {
     }
 
     @Test
-    void testCurrencyConversion() {
-        ExchangeRateProvider exchangeRateProvider = new IdentityRateProvider();
+    void testNumberValue() {
+        NumberValue numberValue = DefaultNumberValue.of(123.8232);
+        assertEquals(10000, numberValue.getAmountFractionDenominator());
+        assertEquals(8232, numberValue.getAmountFractionNumerator());
+        assertEquals(7, numberValue.getPrecision());
+        assertEquals(Double.class, numberValue.getNumberType());
     }
+
+    @Test
+    void testCurrencyConversion() {
+        ExchangeRateProvider exchangeRateProvider = new TestingExchangeRateProvider();
+
+        ExchangeRate exchangeRate = exchangeRateProvider.getExchangeRate("USD", "JPY");
+        assertEquals(1.4396, exchangeRate.getFactor().doubleValueExact(), 0.0001);
+
+        CurrencyConversion currencyConversion = exchangeRateProvider.getCurrencyConversion("USD");
+        assertEquals(RateType.ANY, currencyConversion.getContext().getRateType());
+
+        MonetaryAmount result = Money.of(70.2145862, "EUR").with(currencyConversion);
+        assertEquals(101.08091829352, MoneyUtil.extractAmount(result).doubleValue(), 0.0000001);
+    }
+
+
 }

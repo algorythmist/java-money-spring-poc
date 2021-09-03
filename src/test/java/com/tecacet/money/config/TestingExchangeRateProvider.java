@@ -4,25 +4,28 @@ import org.javamoney.moneta.convert.ExchangeRateBuilder;
 import org.javamoney.moneta.spi.AbstractRateProvider;
 import org.javamoney.moneta.spi.DefaultNumberValue;
 
-import java.math.BigDecimal;
-
+import javax.money.CurrencyUnit;
 import javax.money.convert.ConversionQuery;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ProviderContext;
 import javax.money.convert.RateType;
+import java.math.BigDecimal;
 
 public class TestingExchangeRateProvider extends AbstractRateProvider {
 
     public TestingExchangeRateProvider() {
-        super(ProviderContext.of("ONE"));
+        super(ProviderContext.of("TEST"));
     }
 
     @Override
     public ExchangeRate getExchangeRate(ConversionQuery conversionQuery) {
-        ExchangeRateBuilder builder = new ExchangeRateBuilder(getContext().getProviderName(), RateType.OTHER)
-                .setBase(conversionQuery.getBaseCurrency());
-        builder.setTerm(conversionQuery.getCurrency());
-        builder.setFactor(DefaultNumberValue.of(BigDecimal.ONE)); //TODO
-        return builder.build();
+        CurrencyUnit baseCurrency = conversionQuery.getBaseCurrency();
+        CurrencyUnit fromCurrency = conversionQuery.getCurrency();
+        double factor = baseCurrency.equals(fromCurrency) ? 1.0 : 1.4396;
+        return new ExchangeRateBuilder(getContext().getProviderName(), RateType.ANY)
+                .setBase(baseCurrency)
+                .setTerm(conversionQuery.getCurrency())
+                .setFactor(DefaultNumberValue.of(factor))
+                .build();
     }
 }
