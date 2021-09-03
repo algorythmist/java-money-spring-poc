@@ -7,17 +7,12 @@ import org.springframework.context.annotation.Profile;
 import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.MonetaryConversions;
 
+@Profile("test")
 @Configuration
-@Profile("!test")
-public class MoneyConfig {
+public class TestConfig {
 
-    /**
-     * Starting Exchange rate services can be expensive, so we so it only once at startup
-     * @return The configured exchange rate provider
-     */
     @Bean
     public ExchangeRateProvider exchangeRateProvider() {
-        return MonetaryConversions.getExchangeRateProvider();
+        return new TestingExchangeRateProvider();
     }
 }
-

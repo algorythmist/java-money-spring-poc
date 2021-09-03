@@ -4,23 +4,19 @@ import com.tecacet.money.domain.Contract;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
-import javax.money.convert.ExchangeRateProvider;
-import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.Currency;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class ContractRepositoryTest {
 
     @Autowired
     private ContractRepository contractRepository;
-
-    @MockBean
-    private ExchangeRateProvider exchangeRateProvider;
 
     @Test
     void findByClientId() {
