@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
+import javax.money.MonetaryException;
 import javax.money.NumberValue;
 import javax.money.convert.CurrencyConversion;
 import javax.money.convert.ExchangeRate;
@@ -16,6 +17,7 @@ import javax.money.convert.ExchangeRateProvider;
 import javax.money.convert.RateType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MoneyTest {
 
@@ -100,6 +102,13 @@ class MoneyTest {
 
         MonetaryAmount result = Money.of(70.2145862, "EUR").with(currencyConversion);
         assertEquals(101.08091829352, MoneyUtil.extractAmount(result).doubleValue(), 0.0000001);
+    }
+
+    @Test
+    void testAddition() {
+        MonetaryAmount us = Money.of(100.2473, "USD");
+        MonetaryAmount canada = Money.of(23.20, "CAD");
+        assertThrows(MonetaryException.class, () -> canada.add(us));
     }
 
 
