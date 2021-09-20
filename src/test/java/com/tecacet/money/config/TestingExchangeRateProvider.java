@@ -9,7 +9,6 @@ import javax.money.convert.ConversionQuery;
 import javax.money.convert.ExchangeRate;
 import javax.money.convert.ProviderContext;
 import javax.money.convert.RateType;
-import java.math.BigDecimal;
 
 public class TestingExchangeRateProvider extends AbstractRateProvider {
 

@@ -1,5 +1,6 @@
 package com.tecacet.money.config;
 
+import com.tecacet.money.service.CustomExchangeRateProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,7 +18,7 @@ public class MoneyConfig {
      */
     @Bean
     public ExchangeRateProvider exchangeRateProvider() {
-        return MonetaryConversions.getExchangeRateProvider();
+        return new CustomExchangeRateProvider();
     }
 }
 
