@@ -34,7 +34,7 @@ class InvoiceControllerTest {
 
     @Test
     void createInvoice_notFound() {
-        String clientId = "123";
+        var clientId = "123";
         ResponseEntity<InvoiceDto> response =
                 testRestTemplate.postForEntity("/invoice/" + clientId,
                         clientId,
@@ -44,12 +44,12 @@ class InvoiceControllerTest {
 
     @Test
     void createInvoice() {
-        String clientId = "123";
+        var clientId = "123";
         createContract(clientId);
 
-        Fee fee1 = createFee(clientId, 100.33, "USD");
-        Fee fee2 = createFee(clientId, 200.45, "EUR");
-        Fee fee3 = createFee(clientId, 300.99, "GBP");
+        var fee1 = createFee(clientId, 100.33, "USD");
+        var fee2 = createFee(clientId, 200.45, "EUR");
+        var fee3 = createFee(clientId, 300.99, "GBP");
         feeRepository.saveAll(List.of(fee1, fee2, fee3));
         ResponseEntity<InvoiceDto> response =
                 testRestTemplate.postForEntity("/invoice/" + clientId,

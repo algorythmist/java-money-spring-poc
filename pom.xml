@@ -19,7 +19,8 @@
 		<h2.version>1.4.200</h2.version>
 		<moneta.version>1.4.2</moneta.version>
 		<lombok.version>1.18.20</lombok.version>
-    </properties>
+		<java-finance-api.version>1.2.0</java-finance-api.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -33,6 +34,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.tecacet</groupId>
+			<artifactId>java-finance-api</artifactId>
+			<version>${java-finance-api.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javamoney</groupId>
