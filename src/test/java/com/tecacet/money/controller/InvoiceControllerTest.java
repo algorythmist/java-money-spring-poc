@@ -47,9 +47,9 @@ class InvoiceControllerTest {
         var clientId = "123";
         createContract(clientId);
 
-        var fee1 = createFee(clientId, 100.33, "USD");
-        var fee2 = createFee(clientId, 200.45, "EUR");
-        var fee3 = createFee(clientId, 300.99, "GBP");
+        var fee1 = createFee(clientId, 100.12, "USD");
+        var fee2 = createFee(clientId, 150.55, "EUR");
+        var fee3 = createFee(clientId, 200.77, "GBP");
         feeRepository.saveAll(List.of(fee1, fee2, fee3));
         ResponseEntity<InvoiceDto> response =
                 testRestTemplate.postForEntity("/invoice/" + clientId,
@@ -58,7 +58,7 @@ class InvoiceControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         InvoiceDto invoice = response.getBody();
         assertEquals("USD", invoice.getCurrency());
-        assertEquals(739.98, invoice.getAmount().doubleValue(), 0.0001);
+        assertEquals(453.17, invoice.getAmount().doubleValue(), 0.0001);
     }
 
     private Fee createFee(String clientId, double amount, String currency) {

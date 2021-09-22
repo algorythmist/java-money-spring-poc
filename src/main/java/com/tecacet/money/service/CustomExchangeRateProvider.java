@@ -22,8 +22,7 @@ public class CustomExchangeRateProvider extends AbstractRateProvider {
     public ExchangeRate getExchangeRate(ConversionQuery conversionQuery) {
         CurrencyUnit baseCurrency = conversionQuery.getBaseCurrency();
         CurrencyUnit currency = conversionQuery.getCurrency();
-        CurrencyExchangeService currencyExchangeService =
-                new GrandtrunkCurrencyExchangeService();
+        CurrencyExchangeService currencyExchangeService = new GrandtrunkCurrencyExchangeService();
         double rate = currencyExchangeService.getCurrentExchangeRate(baseCurrency.getCurrencyCode(),
                 currency.getCurrencyCode());
         return new ExchangeRateBuilder(getContext().getProviderName(), RateType.ANY)

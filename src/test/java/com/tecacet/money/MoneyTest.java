@@ -95,13 +95,13 @@ class MoneyTest {
         ExchangeRateProvider exchangeRateProvider = new TestingExchangeRateProvider();
 
         ExchangeRate exchangeRate = exchangeRateProvider.getExchangeRate("USD", "JPY");
-        assertEquals(1.4396, exchangeRate.getFactor().doubleValueExact(), 0.0001);
+        assertEquals(1.368, exchangeRate.getFactor().doubleValueExact(), 0.0001);
 
         CurrencyConversion currencyConversion = exchangeRateProvider.getCurrencyConversion("USD");
         assertEquals(RateType.ANY, currencyConversion.getContext().getRateType());
 
         MonetaryAmount result = Money.of(70.2145862, "EUR").with(currencyConversion);
-        assertEquals(101.08091829352, MoneyUtil.extractAmount(result).doubleValue(), 0.0000001);
+        assertEquals(60.04751411824, MoneyUtil.extractAmount(result).doubleValue(), 0.0000001);
     }
 
     @Test

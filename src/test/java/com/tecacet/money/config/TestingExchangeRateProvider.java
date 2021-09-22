@@ -20,7 +20,8 @@ public class TestingExchangeRateProvider extends AbstractRateProvider {
     public ExchangeRate getExchangeRate(ConversionQuery conversionQuery) {
         CurrencyUnit baseCurrency = conversionQuery.getBaseCurrency();
         CurrencyUnit fromCurrency = conversionQuery.getCurrency();
-        double factor = baseCurrency.equals(fromCurrency) ? 1.0 : 1.4396;
+        double factor = baseCurrency.equals(fromCurrency) ? 1.0 :
+                "EUR".equals(baseCurrency.getCurrencyCode()) ? 0.8552 : 1.368;
         return new ExchangeRateBuilder(getContext().getProviderName(), RateType.ANY)
                 .setBase(baseCurrency)
                 .setTerm(conversionQuery.getCurrency())
