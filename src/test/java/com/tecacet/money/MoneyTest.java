@@ -23,6 +23,7 @@ class MoneyTest {
 
     @Test
     void testCurrencyUnit() {
+
         MonetaryAmount dollars = Money.of(100.2473, "USD");
         assertEquals("USD", dollars.getCurrency().getCurrencyCode());
         assertEquals(2, dollars.getCurrency().getDefaultFractionDigits());
@@ -37,6 +38,7 @@ class MoneyTest {
         assertEquals("BHD", dinars.getCurrency().getCurrencyCode());
         assertEquals(3, dinars.getCurrency().getDefaultFractionDigits());
         assertEquals(48, dinars.getCurrency().getNumericCode());
+
     }
 
     @Test
@@ -105,7 +107,23 @@ class MoneyTest {
     }
 
     @Test
+    void testScalarOperations() {
+        MonetaryAmount amount = Money.of(50.55, "CNY");
+        assertEquals("CNY 101.10", amount.multiply(2).toString());
+        assertEquals("CNY 25.28", amount.divide(2).toString());
+    }
+
+    @Test
     void testAddition() {
+        MonetaryAmount amount1 = Money.of(100.2473, "CAD");
+        MonetaryAmount amount2 = Money.of(-23.2012, "CAD");
+        MonetaryAmount sum = amount1.add(amount2);
+        assertEquals("CAD 77.05", sum.toString());
+        assertEquals("77.0461", sum.getNumber().toString());
+    }
+
+    @Test
+    void testAdditionDifferentCurrencies() {
         MonetaryAmount us = Money.of(100.2473, "USD");
         MonetaryAmount canada = Money.of(23.20, "CAD");
         assertThrows(MonetaryException.class, () -> canada.add(us));
