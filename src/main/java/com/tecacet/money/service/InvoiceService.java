@@ -43,7 +43,7 @@ public class InvoiceService {
         CurrencyConversion conversion = exchangeRateProvider.getCurrencyConversion(invoiceCurrency);
         MonetaryAmount total =
                 fees.stream()
-                        .map(fee -> getMonetaryAmount(invoiceCurrency, conversion, fee))
+                        .map(fee -> conversion.apply(fee.getAmount()))
                         .reduce(Money.of(0, invoiceCurrency), MonetaryAmount::add);
 
         total = total.subtract(total.multiply(contract.getDiscountPercent()).divide(BigDecimal.valueOf(100)));
@@ -61,10 +61,4 @@ public class InvoiceService {
                 .build();
         return invoiceRepository.save(invoice);
     }
-
-    private MonetaryAmount getMonetaryAmount(String invoiceCurrency, CurrencyConversion conversion, Fee fee) {
-        String currencyCode = MoneyUtil.extractCurrencyCode(fee.getAmount());
-        return invoiceCurrency.equals(currencyCode) ? fee.getAmount() : conversion.apply(fee.getAmount());
-    }
-
 }

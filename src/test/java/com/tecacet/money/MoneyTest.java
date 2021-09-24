@@ -42,25 +42,6 @@ class MoneyTest {
     }
 
     @Test
-    void testQueries() {
-        MonetaryAmount dollars = Money.of(100.2473, "USD");
-        assertEquals(10024, dollars.query(MonetaryQueries.convertMinorPart()));
-        assertEquals(100, dollars.query(MonetaryQueries.extractMajorPart()));
-        assertEquals(24, dollars.query(MonetaryQueries.extractMinorPart()));
-
-        MonetaryAmount yen = Money.of(100.2473, "JPY");
-        assertEquals(100, yen.query(MonetaryQueries.convertMinorPart()));
-        assertEquals(100, yen.query(MonetaryQueries.extractMajorPart()));
-        assertEquals(0, yen.query(MonetaryQueries.extractMinorPart()));
-
-        MonetaryAmount dinars = Money.of(100.2473, "BHD");
-        assertEquals(100247, dinars.query(MonetaryQueries.convertMinorPart()));
-        assertEquals(100, dinars.query(MonetaryQueries.extractMajorPart()));
-        assertEquals(247, dinars.query(MonetaryQueries.extractMinorPart()));
-
-    }
-
-    @Test
     void testRounding() {
         MonetaryAmount dollars = Money.of(100.2473, "USD");
         assertEquals("USD 100.25", dollars.toString());
@@ -82,6 +63,27 @@ class MoneyTest {
         MonetaryAmount roundedDinars = dinars.with(Monetary.getDefaultRounding());
         assertEquals("100.247", roundedDinars.getNumber().toString());
     }
+
+    @Test
+    void testQueries() {
+        MonetaryAmount dollars = Money.of(100.2473, "USD");
+        assertEquals(10024, dollars.query(MonetaryQueries.convertMinorPart()));
+        assertEquals(100, dollars.query(MonetaryQueries.extractMajorPart()));
+        assertEquals(24, dollars.query(MonetaryQueries.extractMinorPart()));
+
+        MonetaryAmount yen = Money.of(100.2473, "JPY");
+        assertEquals(100, yen.query(MonetaryQueries.convertMinorPart()));
+        assertEquals(100, yen.query(MonetaryQueries.extractMajorPart()));
+        assertEquals(0, yen.query(MonetaryQueries.extractMinorPart()));
+
+        MonetaryAmount dinars = Money.of(100.2473, "BHD");
+        assertEquals(100247, dinars.query(MonetaryQueries.convertMinorPart()));
+        assertEquals(100, dinars.query(MonetaryQueries.extractMajorPart()));
+        assertEquals(247, dinars.query(MonetaryQueries.extractMinorPart()));
+
+    }
+
+
 
     @Test
     void testNumberValue() {
