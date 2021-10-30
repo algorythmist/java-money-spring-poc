@@ -6,8 +6,6 @@ import com.tecacet.money.domain.Invoice;
 import com.tecacet.money.repository.ContractRepository;
 import com.tecacet.money.repository.FeeRepository;
 import com.tecacet.money.repository.InvoiceRepository;
-import com.tecacet.money.util.MoneyUtil;
-import lombok.RequiredArgsConstructor;
 import org.javamoney.moneta.Money;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +19,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class InvoiceService {
 
     private final FeeRepository feeRepository;
     private final InvoiceRepository invoiceRepository;
     private final ContractRepository contractRepository;
     private final ExchangeRateProvider exchangeRateProvider;
+
+    public InvoiceService(FeeRepository feeRepository, InvoiceRepository invoiceRepository, ContractRepository contractRepository, ExchangeRateProvider exchangeRateProvider) {
+        this.feeRepository = feeRepository;
+        this.invoiceRepository = invoiceRepository;
+        this.contractRepository = contractRepository;
+        this.exchangeRateProvider = exchangeRateProvider;
+    }
 
     public Optional<Invoice> createClientInvoice(String clientId, LocalDate date) {
         List<Fee> fees = feeRepository.findByClientId(clientId);

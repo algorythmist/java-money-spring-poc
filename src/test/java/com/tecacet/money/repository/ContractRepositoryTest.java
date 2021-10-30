@@ -35,10 +35,9 @@ public class ContractRepositoryTest {
     }
 
     private Contract createContract(String clientId, Currency currency) {
-        Contract contract = Contract.builder()
-                .clientId(clientId)
-                .invoiceCurrency(currency)
-                .build();
+        Contract contract = new Contract();
+        contract.setClientId(clientId);
+        contract.setInvoiceCurrency(currency);
         return contractRepository.save(contract);
     }
 }
