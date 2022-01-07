@@ -26,7 +26,8 @@ import javax.validation.constraints.NotNull;
 public class Fee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @NotNull(message = "Client ID is required")

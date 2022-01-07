@@ -22,7 +22,8 @@ public class Contract {
     public static final String DEFAULT_CURRENCY = "USD";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
     private UUID id;
 
     @NotNull(message = "Client ID is required")
