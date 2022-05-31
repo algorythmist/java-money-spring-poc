@@ -1,6 +1,5 @@
 package com.tecacet.money.domain;
 
-import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,11 +11,6 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "contract")
-@Getter
-@Builder
-//The following are required by the JPA contract
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Contract {
 
     public static final String DEFAULT_CURRENCY = "USD";
@@ -30,15 +24,52 @@ public class Contract {
     private String clientId;
 
     @NotNull(message = "Invoice Currency is required")
-    @Builder.Default
     private Currency invoiceCurrency = Currency.getInstance(DEFAULT_CURRENCY);
 
     @NotNull(message = "Discount Percent is required")
-    @Builder.Default
     private BigDecimal discountPercent = BigDecimal.ZERO;
 
     @Column(name = "created", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime created;
 
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public Currency getInvoiceCurrency() {
+        return invoiceCurrency;
+    }
+
+    public void setInvoiceCurrency(Currency invoiceCurrency) {
+        this.invoiceCurrency = invoiceCurrency;
+    }
+
+    public BigDecimal getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public void setDiscountPercent(BigDecimal discountPercent) {
+        this.discountPercent = discountPercent;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
 }

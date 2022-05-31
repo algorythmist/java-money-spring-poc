@@ -1,31 +1,22 @@
 package com.tecacet.money.domain;
 
-import lombok.*;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.money.MonetaryAmount;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.money.MonetaryAmount;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 @Entity
 @Table(name = "invoice")
-@Getter
-@Builder
-//The following are required by the JPA contract
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Invoice {
+
+    private Invoice() {
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -40,8 +31,7 @@ public class Invoice {
     private MonetaryAmount total;
 
     @NotNull(message = "discountPercent is required")
-    @Builder.Default
-    private BigDecimal discountPercent = BigDecimal.ZERO;
+    private final BigDecimal discountPercent = BigDecimal.ZERO;
 
     @NotNull(message = "Invoice date is required")
     private LocalDate invoiceDate;
@@ -52,5 +42,71 @@ public class Invoice {
     @Column(name = "created", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime created;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public MonetaryAmount getTotal() {
+        return total;
+    }
+
+    public BigDecimal getDiscountPercent() {
+        return discountPercent;
+    }
+
+    public LocalDate getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    private static class InvoiceBuilderPrv implements InvoiceBuilder {
+
+        private final Invoice invoice = new Invoice();
+
+        @Override
+        public InvoiceBuilder clientId(String clientId) {
+            invoice.clientId = clientId;
+            return this;
+        }
+
+        @Override
+        public InvoiceBuilder total(MonetaryAmount total) {
+            invoice.total = total;
+            return this;
+        }
+
+        @Override
+        public InvoiceBuilder invoiceDate(LocalDate date) {
+            invoice.invoiceDate = date;
+            return this;
+        }
+
+        @Override
+        public InvoiceBuilder dueDate(LocalDate dueDate) {
+            invoice.dueDate = dueDate;
+            return this;
+        }
+
+        @Override
+        public Invoice build() {
+            return invoice;
+        }
+    }
+
+    public static InvoiceBuilder builder() {
+        return new InvoiceBuilderPrv();
+    }
 
 }

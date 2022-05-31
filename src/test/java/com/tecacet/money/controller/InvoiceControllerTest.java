@@ -62,18 +62,17 @@ class InvoiceControllerTest {
     }
 
     private Fee createFee(String clientId, double amount, String currency) {
-        return Fee.builder()
-                .clientId(clientId)
-                .amount(Money.of(amount, currency))
-                .build();
+        Fee fee = new Fee();
+        fee.setClientId(clientId);
+        fee.setAmount(Money.of(amount, currency));
+        return fee;
     }
 
     private Contract createContract(String clientId) {
-        Contract contract = Contract.builder()
-                .clientId(clientId)
-                .invoiceCurrency(Currency.getInstance("USD"))
-                .discountPercent(BigDecimal.TEN)
-                .build();
+        Contract contract = new Contract();
+        contract.setClientId(clientId);
+        contract.setInvoiceCurrency(Currency.getInstance("USD"));
+        contract.setDiscountPercent(BigDecimal.TEN);
         return contractRepository.save(contract);
     }
 }

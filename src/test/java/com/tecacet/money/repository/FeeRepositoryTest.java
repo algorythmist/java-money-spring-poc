@@ -38,9 +38,9 @@ class FeeRepositoryTest {
     }
 
     private Fee createFee(String clientId, double amount, String currency) {
-        return Fee.builder()
-                .clientId(clientId)
-                .amount(Money.of(amount, currency))
-                .build();
+        Fee fee = new Fee();
+        fee.setClientId(clientId);
+        fee.setAmount(Money.of(amount, currency));
+        return fee;
     }
 }
