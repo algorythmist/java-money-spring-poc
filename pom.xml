@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>16</java.version>
-		<h2.version>2.1.210</h2.version>
+		<h2.version>2.2.220</h2.version>
 		<moneta.version>1.4.2</moneta.version>
 		<lombok.version>1.18.22</lombok.version>
 		<java-finance-api.version>1.2.0</java-finance-api.version>
